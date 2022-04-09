@@ -12,26 +12,9 @@ jobs:
   verify-commit-messages:
     runs-on: ubuntu-latest
     steps:
-#      - ${{ each commit in toJSON(github.event.commits) }}
-      - uses: actions/github-script@v6
+      - name: Verify Commit Type
+        uses: gsactions/commit-message-checker@v1
         with:
-          script: |
-            const commits = ${{ toJSON(github.event.commits) }}
-            for (const commit of commits) {
-              console.log(commit)
-            }
-
-#      - name: Dump GitHub context
-#        id: github_context_step
-#        run: echo '${{ toJSON(github) }}'
-#      - name: Dump job context
-#        run: echo '${{ toJSON(job) }}'
-#      - name: Dump steps context
-#        run: echo '${{ toJSON(steps) }}'
-#      - name: Dump runner context
-#        run: echo '${{ toJSON(runner) }}'
-#      - name: Dump strategy context
-#        run: echo '${{ toJSON(strategy) }}'
-#      - name: Dump matrix context
-#        run: echo '${{ toJSON(matrix) }}'
-#
+          pattern: '\[[^]]+\] .+$\'
+          checkAllCommitMessages: 'true'
+          error: 'ERROR: the pattern does not match'
